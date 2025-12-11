@@ -126,8 +126,24 @@ public:
     }
 
     // insert by index
-    int insert(int index, const T &value)
+    int insert(int index, const T& value)
     {
+        if (index < 0 || index > size_) index = size_;
+
+        if (size_ >= capacity_)
+        {
+            reallocate_();
+        }
+
+        for(int i = size_; i > index; i--)
+        {
+            constructAt(i, std::move(data_[i-1]));
+            data_[i-1].~T();
+        }
+
+        constructAt(index, value);
+        size_++;
+        return index;
     }
 
     // remove by index
