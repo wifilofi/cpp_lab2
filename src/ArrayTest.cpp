@@ -3,10 +3,17 @@
 //
 
 #include "../include/ArrayTest.h"
-#include <iostream>
+#include "../include/Array.h"
+#include "gtest/gtest.h"
 
-int main()
+TEST(ArrayTest, DefaultConstructor)
 {
-    std::cout << "Test Array" << std::endl;
-    return 0;
+    Array<int> arr;
+    EXPECT_EQ(arr.size(), 0);
+}
+
+int main(int argc, char *argv[])
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
