@@ -76,6 +76,7 @@ public:
     }
 
     Array(const Array &other)
+        : capacity_(other.capacity_), size_(other.size_)
     {
         data_ = static_cast<T *>(std::malloc(sizeof(T) * capacity_));
 
