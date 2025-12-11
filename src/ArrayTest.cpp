@@ -50,8 +50,30 @@ TEST(ArrayTest, MoveConstructor)
     EXPECT_EQ(arr1.size(), 0);
 }
 
-// insert at end
-// insert at index
+TEST(ArrayTest, InsertAtEnd)
+{
+    Array<int> arr;
+    for (int i = 0; i < 5; i++)
+    {
+        arr.insert(i * 2);
+    }
+    EXPECT_EQ(arr.size(), 5);
+    EXPECT_EQ(arr[4], 8);
+}
+
+TEST(ArrayTest, InsertAtIndex)
+{
+    Array<std::string> arr;
+    arr.insert("first cat");
+    arr.insert("third cat");
+    arr.insert(1, "second cat");
+
+    EXPECT_EQ(arr.size(), 3);
+    EXPECT_EQ(arr[0], "first cat");
+    EXPECT_EQ(arr[1], "second cat");
+    EXPECT_EQ(arr[2], "third cat");
+}
+
 // remove
 // assignment
 // iterator
