@@ -164,17 +164,80 @@ public:
 
     class Iterator
     {
+    private:
+        T *current_;
+        T *end_;
+
+    public:
+        Iterator(T *start, T *end) : current_(start), end_(end)
+        {
+        }
+
+        const T &get() const
+        {
+            return *current_;
+        }
+
+        void set(const T &value)
+        {
+            *current_ = value;
+        }
+
+        void next()
+        {
+            ++current_;
+        }
+
+        bool hasNext() const
+        {
+            return (current_ + 1) < end_;
+        }
     };
 
     class ConstIterator
     {
+    private:
+        const T *current_;
+        const T *end_;
+
+    public:
+        ConstIterator(const T *start, const T *end) : current_(start), end_(end)
+        {
+        }
+
+        const T &get() const
+        {
+            return *current_;
+        }
+
+        void next()
+        {
+            ++current_;
+        }
+
+        bool hasNext() const
+        {
+            return (current_ + 1) < end_;
+        }
     };
 
-    Iterator iterator() { return Iterator(*this, 0); }
-    ConstIterator const_iterator() { return ConstIterator(*this, 0); }
+    Iterator iterator()
+    {
+        return Iterator(*this, 0);
+    }
+    ConstIterator const_iterator()
+    {
+        return ConstIterator(*this, 0);
+    }
 
-    Iterator reverseIterator() { return Iterator(*this, -1); }
-    ConstIterator reverseIterator() const { return ConstIterator(*this, -1); }
+    Iterator reverse_iterator()
+    {
+        return Iterator(*this, -1);
+    }
+    ConstIterator reverse_iterator() const
+    {
+        return ConstIterator(*this, -1);
+    }
 };
 
 
