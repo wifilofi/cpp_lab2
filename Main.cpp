@@ -9,5 +9,15 @@ int main()
     {
         arr.insert("element" + std::to_string(i));
     }
-    std:: cout << arr.to_string();
+
+    std:: cout << "size = " << arr.size() << std::endl;
+    std::cout << arr.to_string() << std::endl;
+    arr.insert(3, "inserted element");
+    std:: cout << "size = " << arr.size() << std::endl;
+    std::cout << arr.to_string() << std::endl;
+    arr.remove(5);
+    std:: cout << "size = " << arr.size() << std::endl;
+    std::cout << arr.to_string() << std::endl;
+
+    return 0;
 }
