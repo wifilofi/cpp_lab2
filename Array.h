@@ -126,7 +126,7 @@ public:
     }
 
     // insert by index
-    int insert(int index, const T& value)
+    int insert(int index, const T &value)
     {
         if (index < 0 || index > size_) index = size_;
 
@@ -135,10 +135,10 @@ public:
             reallocate_();
         }
 
-        for(int i = size_; i > index; i--)
+        for (int i = size_; i > index; i--)
         {
-            constructAt(i, std::move(data_[i-1]));
-            data_[i-1].~T();
+            constructAt(i, std::move(data_[i - 1]));
+            data_[i - 1].~T();
         }
 
         constructAt(index, value);
@@ -149,6 +149,17 @@ public:
     // remove by index
     void remove(int index)
     {
+        if (index < 0 || index >= size_) return;
+
+        data_[index].~T();
+
+        for (int i = index; i < size_ - 1; i++)
+        {
+            constructAt(i, std::move(data_[i + 1]));
+            data_[i + 1].~T();
+        }
+
+        size_--;
     }
 
     class Iterator
