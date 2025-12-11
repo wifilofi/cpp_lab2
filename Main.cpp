@@ -1,7 +1,12 @@
 #include <iostream>
-
+#include "Array.h"
 // TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 int main()
 {
-    std::cout << "Hello and welcome to \n";
+    using namespace std;
+    Array<string> arr(5);
+    for (int i = 0; i < arr.capacity(); i++)
+    {
+        arr.insert("element" + std::to_string(i));
+    }
 }

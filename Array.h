@@ -21,14 +21,30 @@ private:
 
     void constructAt(int index, const T &&value)
     {
+        new(&data_[index]) T(std::move(value));
     }
 
     void constructAt(int index, const T &value)
     {
+        new(&data_[index]) T(value);
     }
 
     void reallocate_(int new_capacity)
     {
+        int newCapacity = capacity_ * 1.6;
+        if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
+
+        T *newData = static_cast<T *>(std::malloc(sizeof(T) * newCapacity));
+
+        for (int i = 0; i < size_; i++)
+        {
+            new(&newData[i]) T(std::move(data_[i]));
+            data_[i].~T();
+        }
+
+        std::free(data_);
+        data_ = newData;
+        capacity_ = newCapacity;
     }
 
     void shift_right_(int from, int count = 1)
@@ -225,6 +241,7 @@ public:
     {
         return Iterator(*this, 0);
     }
+
     ConstIterator const_iterator()
     {
         return ConstIterator(*this, 0);
@@ -234,6 +251,7 @@ public:
     {
         return Iterator(*this, -1);
     }
+
     ConstIterator reverse_iterator() const
     {
         return ConstIterator(*this, -1);
