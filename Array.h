@@ -11,6 +11,9 @@
 #include <iostream>
 #include <utility>
 
+#include <sstream>
+#include <string>
+
 template<typename T>
 class Array final
 {
@@ -29,7 +32,7 @@ private:
         new(&data_[index]) T(value);
     }
 
-    void reallocate_(int new_capacity)
+    void reallocate_()
     {
         int newCapacity = capacity_ * 1.6;
         if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
@@ -255,6 +258,22 @@ public:
     ConstIterator reverse_iterator() const
     {
         return ConstIterator(*this, -1);
+    }
+
+    [[nodiscard]] std::string to_string() const
+    {
+        std::stringstream ss;
+        ss << "[";
+        for (int i = 0; i < size_; i++)
+        {
+            ss << data_[i];
+            if (i < size_ - 1)
+            {
+                ss << ", ";
+            }
+        }
+        ss << "]";
+        return ss.str();
     }
 };
 

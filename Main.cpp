@@ -9,4 +9,5 @@ int main()
     {
         arr.insert("element" + std::to_string(i));
     }
+    std:: cout << arr.to_string();
 }
