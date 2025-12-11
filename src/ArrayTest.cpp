@@ -39,8 +39,17 @@ TEST(ArrayTest, CopyConstructor)
     EXPECT_EQ(arr2[1], 10);
 }
 
-// copy constructor
-// move constructor
+TEST(ArrayTest, MoveConstructor)
+{
+    Array<std::string> arr1;
+    arr1.insert("cool string 1337");
+
+    Array<std::string> arr2(std::move(arr1));
+    EXPECT_EQ(arr2.size(), 1);
+    EXPECT_EQ(arr2[0], "cool string 1337");
+    EXPECT_EQ(arr1.size(), 0);
+}
+
 // insert at end
 // insert at index
 // remove
