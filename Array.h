@@ -84,14 +84,45 @@ public:
             std::free(data_);
         }
     }
-    
 
-    int size() const { return size_; }
-    int capacity() const { return capacity_; }
+    void swap(Array &first, Array &second) noexcept
+    {
+        std::swap(first.capacity_, second.capacity_);
+        std::swap(first.size_, second.size_);
+        std::swap(first.data_, second.data_);
+    }
+
+    const T &operator[](int index) const
+    {
+        return data_[index];
+    }
+
+    T &operator[](int index)
+    {
+        return data_[index];
+    }
+
+    int size() const
+    {
+        return size_;
+    }
+
+    int capacity() const
+    {
+        return capacity_;
+    }
 
     // inset at end
     int insert(const T &value)
     {
+        if (size_ >= capacity_)
+        {
+            reallocate_();
+        }
+
+        constructAt(size_, value);
+        size_++;
+        return size_ - 1;
     }
 
     // insert by index
