@@ -11,6 +11,22 @@ class Array
 private:
     int capacity_ = 8;
     int size_ = 0;
+    T* data_ = nullptr;
+
+    void reallocate_(int new_capacity)
+    {
+
+    }
+
+    void shift_right_(int from, int count = 1)
+    {
+
+    }
+
+    void shift_left_(int from, int count = 1)
+    {
+        
+    }
 
 public:
     int size() const { return size_; }
