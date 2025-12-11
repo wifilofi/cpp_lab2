@@ -74,7 +74,19 @@ TEST(ArrayTest, InsertAtIndex)
     EXPECT_EQ(arr[2], "third cat");
 }
 
-// remove
+TEST(ArrayTest, Remove)
+{
+    Array<int> arr;
+    for (int i = 0; i < 5; i++)
+    {
+        arr.insert(i);
+    }
+    arr.remove(2);
+
+    EXPECT_EQ(arr.size(), 4);
+    EXPECT_EQ(arr[2], 3);
+}
+
 // assignment
 // iterator
 // reverse iterator
