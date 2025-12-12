@@ -74,6 +74,16 @@ TEST(ArrayTest, InsertAtIndex)
     EXPECT_EQ(arr[2], "third cat");
 }
 
+TEST(ArrayTest, InsertInvalidIndex)
+{
+    Array<int> arr;
+    arr.insert(5);
+
+    arr.insert(10, 99);
+    EXPECT_EQ(arr.size(), 2);
+    EXPECT_EQ(arr[1], 99);
+}
+
 TEST(ArrayTest, Remove)
 {
     Array<int> arr;
@@ -86,6 +96,7 @@ TEST(ArrayTest, Remove)
     EXPECT_EQ(arr.size(), 4);
     EXPECT_EQ(arr[2], 3);
 }
+
 
 // assignment
 // iterator
