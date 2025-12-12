@@ -1,8 +1,4 @@
-﻿//
-// Created by gfn on 12/11/2025.
-//
-
-#ifndef CPP_LAB2_ARRAY_H
+﻿#ifndef CPP_LAB2_ARRAY_H
 #define CPP_LAB2_ARRAY_H
 
 #pragma once
@@ -14,20 +10,20 @@
 #include <sstream>
 #include <string>
 
-template<typename T>
+template <typename T>
 class Array final
 {
 private:
     int capacity_ = 8;
     int size_ = 0;
-    T *data_ = nullptr;
+    T* data_ = nullptr;
 
-    void constructAt(int index, const T &&value)
+    void constructAt(int index, const T&& value)
     {
         new(&data_[index]) T(std::move(value));
     }
 
-    void constructAt(int index, const T &value)
+    void constructAt(int index, const T& value)
     {
         new(&data_[index]) T(value);
     }
@@ -37,7 +33,7 @@ private:
         int newCapacity = capacity_ * 1.6;
         if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
 
-        T *newData = static_cast<T *>(std::malloc(sizeof(T) * newCapacity));
+        T* newData = static_cast<T*>(std::malloc(sizeof(T) * newCapacity));
 
         for (int i = 0; i < size_; i++)
         {
@@ -50,18 +46,11 @@ private:
         capacity_ = newCapacity;
     }
 
-    void shift_right_(int from, int count = 1)
-    {
-    }
-
-    void shift_left_(int from, int count = 1)
-    {
-    }
-
 public:
+#pragma region Constructors
     Array()
     {
-        data_ = static_cast<T *>(std::malloc(sizeof(T) * capacity_));
+        data_ = static_cast<T*>(std::malloc(sizeof(T) * capacity_));
     }
 
     Array(int initCapacity)
@@ -72,13 +61,13 @@ public:
             capacity_ = 1;
         }
 
-        data_ = static_cast<T *>(std::malloc(sizeof(T) * capacity_));
+        data_ = static_cast<T*>(std::malloc(sizeof(T) * capacity_));
     }
 
-    Array(const Array &other)
+    Array(const Array& other)
         : capacity_(other.capacity_), size_(other.size_)
     {
-        data_ = static_cast<T *>(std::malloc(sizeof(T) * capacity_));
+        data_ = static_cast<T*>(std::malloc(sizeof(T) * capacity_));
 
         for (int i = 0; i < size_; i++)
         {
@@ -86,12 +75,14 @@ public:
         }
     }
 
-    Array(Array &&other) noexcept
+    Array(Array&& other) noexcept
         : capacity_(std::exchange(other.capacity_, 0)),
           size_(std::exchange(other.size_, 0)),
           data_(std::exchange(other.data_, nullptr))
     {
     }
+
+#pragma endregion
 
     ~Array()
     {
@@ -105,21 +96,11 @@ public:
         }
     }
 
-    void swap(Array &first, Array &second) noexcept
+    void swap(Array& first, Array& second) noexcept
     {
         std::swap(first.capacity_, second.capacity_);
         std::swap(first.size_, second.size_);
         std::swap(first.data_, second.data_);
-    }
-
-    const T &operator[](int index) const
-    {
-        return data_[index];
-    }
-
-    T &operator[](int index)
-    {
-        return data_[index];
     }
 
     int size() const
@@ -132,8 +113,33 @@ public:
         return capacity_;
     }
 
+
+#pragma region Operators
+    Array& operator=(Array data) noexcept
+    {
+        if (this != data)
+        {
+            std::swap(capacity(), data.capacity());
+            std::swap(size(), data.size());
+            std::swap(data_, data.data_);
+        }
+        return *this;
+    }
+
+    const T& operator[](int index) const
+    {
+        return data_[index];
+    }
+
+    T& operator[](int index)
+    {
+        return data_[index];
+    }
+
+#pragma endregion
+
     // inset at end
-    int insert(const T &value)
+    int insert(const T& value)
     {
         if (size_ >= capacity_)
         {
@@ -146,7 +152,7 @@ public:
     }
 
     // insert by index
-    int insert(int index, const T &value)
+    int insert(int index, const T& value)
     {
         if (index < 0 || index > size_) index = size_;
 
@@ -182,23 +188,24 @@ public:
         size_--;
     }
 
+#pragma region Iterators
     class Iterator
     {
     private:
-        T *current_;
-        T *end_;
+        T* current_;
+        T* end_;
 
     public:
-        Iterator(T *start, T *end) : current_(start), end_(end)
+        Iterator(T* start, T* end) : current_(start), end_(end)
         {
         }
 
-        const T &get() const
+        const T& get() const
         {
             return *current_;
         }
 
-        void set(const T &value)
+        void set(const T& value)
         {
             *current_ = value;
         }
@@ -217,15 +224,15 @@ public:
     class ConstIterator
     {
     private:
-        const T *current_;
-        const T *end_;
+        const T* current_;
+        const T* end_;
 
     public:
-        ConstIterator(const T *start, const T *end) : current_(start), end_(end)
+        ConstIterator(const T* start, const T* end) : current_(start), end_(end)
         {
         }
 
-        const T &get() const
+        const T& get() const
         {
             return *current_;
         }
@@ -260,6 +267,8 @@ public:
     {
         return ConstIterator(*this, -1);
     }
+
+#pragma endregion
 
     [[nodiscard]] std::string to_string() const
     {
