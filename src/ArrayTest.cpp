@@ -42,6 +42,21 @@ TEST(ArrayTest, CapacityConstructor)
     EXPECT_EQ(arr.size(), 0);
 }
 
+TEST(ArrayTest, AutoResizeCapacity)
+{
+    Array<int> arr;
+    int initCap = arr.capacity();
+
+    for (int i = 0; i < initCap + 5; i++)
+    {
+        arr.insert(i);
+    }
+
+    EXPECT_GT(arr.capacity(), initCap);
+    EXPECT_EQ(arr.size(), initCap + 5);
+    EXPECT_EQ(arr[initCap + 4], initCap + 4);
+}
+
 TEST(ArrayTest, CopyConstructor)
 {
     Array<int> arr1;
