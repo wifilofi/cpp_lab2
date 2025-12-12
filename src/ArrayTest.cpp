@@ -118,6 +118,7 @@ TEST(AssigmentTest, MoveCopyAssigment)
     EXPECT_EQ(f[0], "num 1");
 }
 
+
 TEST(ArrayTest, InsertIntAtEnd)
 {
     Array<int> arr;
@@ -193,6 +194,17 @@ TEST(ArrayTest, Remove)
     EXPECT_EQ(arr[2], 3);
 }
 
+TEST(RemoveTest, RemoveStringMiddle)
+{
+    Array<std::string> a(5);
+    for (int i = 0; i < 9; i++)
+    {
+        a.insert(std::to_string(i));
+    }
+    a.remove(5);
+    EXPECT_EQ(a.size(), 8);
+    EXPECT_EQ(a[5], "6");
+}
 
 // assignment
 // iterator
