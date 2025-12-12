@@ -19,6 +19,23 @@ TEST(ArrayTest, DefaultConstructor)
     EXPECT_EQ(arr.size(), 0);
 }
 
+TEST(ArrayTest, DefaultConstructorCapacity)
+{
+    Array<int> arr;
+    EXPECT_EQ(arr.capacity(), 8);
+}
+
+TEST(ArrayTest, CapacityConstructorWithElements)
+{
+    Array<int> arr(10);
+    EXPECT_EQ(arr.capacity(), 10);
+    EXPECT_EQ(arr.size(), 0);
+
+    arr.insert(42);
+    EXPECT_EQ(arr.size(), 1);
+    EXPECT_EQ(arr[0], 42);
+}
+
 TEST(ArrayTest, CapacityConstructor)
 {
     Array<int> arr(10);
