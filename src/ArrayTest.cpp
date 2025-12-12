@@ -206,6 +206,24 @@ TEST(RemoveTest, RemoveStringMiddle)
     EXPECT_EQ(a[5], "6");
 }
 
+TEST(InsertTest, InsertAfterRemoveString)
+{
+    Array<std::string> a(16);
+    for (int i = 0; i < 16; i++)
+    {
+        a.insert(std::to_string(i));
+    }
+
+    a.remove(0);
+
+    a.insert("string!!");
+
+    EXPECT_EQ(a.size(), 16);
+    EXPECT_EQ(a[15], "string!!");
+}
+
+
+
 // assignment
 // iterator
 // reverse iterator

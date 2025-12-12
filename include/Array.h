@@ -30,7 +30,7 @@ private:
 
     void reallocate_()
     {
-        int newCapacity = capacity_ * 1.6;
+        int newCapacity = capacity_ * 1.6; //2
         if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
 
         T* newData = static_cast<T*>(std::malloc(sizeof(T) * newCapacity));
@@ -172,7 +172,6 @@ public:
         return index;
     }
 
-    // remove by index
     void remove(int index)
     {
         if (index < 0 || index >= size_) return;
