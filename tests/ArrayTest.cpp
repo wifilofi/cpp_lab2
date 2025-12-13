@@ -1,5 +1,4 @@
-﻿#include "../include/ArrayTest.h"
-#include "../include/Array.h"
+﻿#include "../include/Array.h"
 #include "gtest/gtest.h"
 
 
@@ -15,6 +14,7 @@ TEST(ArrayTest, DefaultConstructor)
 {
     Array<int> arr;
     EXPECT_EQ(arr.size(), 0);
+    EXPECT_GE(arr.capacity(), 8);
 }
 
 TEST(ArrayTest, DefaultConstructorCapacity)
@@ -89,7 +89,7 @@ TEST(CopyTest, MoveConstructorWithEmpty)
 #pragma endregion
 
 
-TEST(AssigmentTest, MoveCopyAssigment)
+TEST(ArrayTest, MoveCopyAssigment)
 {
     Array<int> a(5);
     for (int i = 0; i < 9; i++)
@@ -130,7 +130,7 @@ TEST(ArrayTest, InsertIntAtEnd)
     EXPECT_EQ(arr[4], 40);
 }
 
-TEST(InsertTest, EndStringInsert)
+TEST(ArrayTest, EndStringInsert)
 {
     Array<std::string> a;
     for (int i = 0; i < 5; i++)
@@ -143,7 +143,7 @@ TEST(InsertTest, EndStringInsert)
     EXPECT_EQ(a[4], "text_5");
 }
 
-TEST(InsertTest, InsertAtEndMoreThanCapacity)
+TEST(ArrayTest, InsertAtEndMoreThanCapacity)
 {
     Array<int> a;
     for (int i = 0; i < 9; i++)
@@ -194,7 +194,7 @@ TEST(ArrayTest, Remove)
     EXPECT_EQ(arr[2], 3);
 }
 
-TEST(RemoveTest, RemoveStringMiddle)
+TEST(ArrayTest, RemoveStringMiddle)
 {
     Array<std::string> a(5);
     for (int i = 0; i < 9; i++)
@@ -206,7 +206,7 @@ TEST(RemoveTest, RemoveStringMiddle)
     EXPECT_EQ(a[5], "6");
 }
 
-TEST(InsertTest, InsertAfterRemoveString)
+TEST(ArrayTest, InsertAfterRemoveString)
 {
     Array<std::string> a(16);
     for (int i = 0; i < 16; i++)
@@ -223,6 +223,24 @@ TEST(InsertTest, InsertAfterRemoveString)
 }
 
 
+TEST(ArrayTest, NoMemoryLeak)
+{
+    auto* arr = new Array<std::string>();
+    for (int i = 0; i < 100; ++i)
+    {
+        arr->insert("string" + std::to_string(i));
+    }
+    delete arr;
+}
+
+TEST(ArrayTest, SelfAssignment)
+{
+    Array<std::string> a;
+    a.insert("hello");
+    a.insert("world");
+    a = std::move(a);
+    EXPECT_EQ(a.size(), 2);
+}
 
 // assignment
 // iterator

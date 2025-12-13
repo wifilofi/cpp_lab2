@@ -11,6 +11,9 @@
 #include <string>
 
 template <typename T>
+
+//TODO: requirements?
+
 class Array final
 {
 private:
@@ -82,8 +85,6 @@ public:
     {
     }
 
-#pragma endregion
-
     ~Array()
     {
         if (data_ != nullptr)
@@ -96,11 +97,14 @@ public:
         }
     }
 
+#pragma endregion
+
     void swap(Array& first, Array& second) noexcept
     {
-        std::swap(first.capacity_, second.capacity_);
-        std::swap(first.size_, second.size_);
-        std::swap(first.data_, second.data_);
+        using std::swap;
+        swap(first.capacity_, second.capacity_);
+        swap(first.size_, second.size_);
+        swap(first.data_, second.data_);
     }
 
     int size() const
@@ -115,14 +119,9 @@ public:
 
 
 #pragma region Operators
-    Array& operator=(Array data) noexcept
+    Array& operator=(Array other) noexcept
     {
-        if (this != data)
-        {
-            std::swap(capacity(), data.capacity());
-            std::swap(size(), data.size());
-            std::swap(data_, data.data_);
-        }
+        swap(*this, other);
         return *this;
     }
 
@@ -154,7 +153,10 @@ public:
     // insert by index
     int insert(int index, const T& value)
     {
-        if (index < 0 || index > size_) index = size_;
+        if (index < 0 || index > size_)
+        {
+            index = size_;
+        }
 
         if (size_ >= capacity_)
         {
@@ -174,7 +176,10 @@ public:
 
     void remove(int index)
     {
-        if (index < 0 || index >= size_) return;
+        if (index < 0 || index >= size_)
+        {
+            return;
+        }
 
         data_[index].~T();
 

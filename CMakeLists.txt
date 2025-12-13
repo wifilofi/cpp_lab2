@@ -5,17 +5,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(googletest)
+include_directories(include)
 
-enable_testing()
-include_directories(${CMAKE_SOURCE_DIR}/include)
+add_executable(cpp_lab2
+        src/Main.cpp
+        include/Array.h)
 
-include(FetchContent)
-
-add_executable(ArrayTest src/ArrayTest.cpp)
-target_link_libraries(
-        ArrayTest
-        GTest::gtest_main
+add_executable(ArrayTest
+        tests/ArrayTest.cpp
 )
 
-include(GoogleTest)
-gtest_discover_tests(ArrayTest)
+
+target_link_libraries(
+        ArrayTest
+        gtest
+)
