@@ -223,6 +223,11 @@ public:
         {
             return (current_ + 1) < end_;
         }
+
+        bool isValid() const
+        {
+            return current_ < end_;
+        }
     };
 
     class ConstIterator
@@ -250,26 +255,31 @@ public:
         {
             return (current_ + 1) < end_;
         }
+
+        bool isValid() const
+        {
+            return current_ < end_;
+        }
     };
 
     Iterator iterator()
     {
-        return Iterator(*this, 0);
+        return Iterator(data_, data_ + size_);
     }
 
     ConstIterator const_iterator()
     {
-        return ConstIterator(*this, 0);
+        return ConstIterator(data_, data_ + size_);
     }
 
     Iterator reverse_iterator()
     {
-        return Iterator(*this, -1);
+        return Iterator(data_ + size_ - 1, data_ - 1);
     }
 
     ConstIterator reverse_iterator() const
     {
-        return ConstIterator(*this, -1);
+        return ConstIterator(data_ + size_ - 1, data_ - 1);
     }
 
 #pragma endregion
