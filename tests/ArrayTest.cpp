@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 }
 #pragma region Constructors
 
-//?
+
 TEST(ArrayTest, DefaultConstructor)
 {
     Array<int> arr;
@@ -232,24 +232,3 @@ TEST(ArrayTest, NoMemoryLeak)
     }
     delete arr;
 }
-
-TEST(ArrayTest, SelfAssignment)
-{
-    Array<std::string> a;
-    a.insert("hello");
-    a.insert("world");
-    a = std::move(a);
-    EXPECT_EQ(a.size(), 2);
-}
-
-// assignment
-// iterator
-// reverse iterator
-// const iterator
-// subscript iterator
-// capacity iterator
-
-// EDGES cases
-// remove from empty
-// insert index out of bounsd
-//

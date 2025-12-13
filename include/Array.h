@@ -12,43 +12,8 @@
 
 template <typename T>
 
-//TODO: requirements?
-
 class Array final
 {
-private:
-    int capacity_ = 8;
-    int size_ = 0;
-    T* data_ = nullptr;
-
-    void constructAt(int index, const T&& value)
-    {
-        new(&data_[index]) T(std::move(value));
-    }
-
-    void constructAt(int index, const T& value)
-    {
-        new(&data_[index]) T(value);
-    }
-
-    void reallocate_()
-    {
-        int newCapacity = capacity_ * 1.6; //2
-        if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
-
-        T* newData = static_cast<T*>(std::malloc(sizeof(T) * newCapacity));
-
-        for (int i = 0; i < size_; i++)
-        {
-            new(&newData[i]) T(std::move(data_[i]));
-            data_[i].~T();
-        }
-
-        std::free(data_);
-        data_ = newData;
-        capacity_ = newCapacity;
-    }
-
 public:
 #pragma region Constructors
     Array()
@@ -122,6 +87,23 @@ public:
     Array& operator=(Array other) noexcept
     {
         swap(*this, other);
+        return *this;
+    }
+
+    Array& operator=(Array&& other) noexcept
+    {
+        if (this != &other)
+        {
+            for (int i = 0; i < size_; i++)
+            {
+                data_[i].~T();
+            }
+            std::free(data_);
+
+            capacity_ = std::exchange(other.capacity_, 0);
+            size_ = std::exchange(other.size_, 0);
+            data_ = std::exchange(other.data_, nullptr);
+        }
         return *this;
     }
 
@@ -298,6 +280,39 @@ public:
         }
         ss << "]";
         return ss.str();
+    }
+
+private:
+    int capacity_ = 8;
+    int size_ = 0;
+    T* data_ = nullptr;
+
+    void constructAt(int index, const T&& value)
+    {
+        new(&data_[index]) T(std::move(value));
+    }
+
+    void constructAt(int index, const T& value)
+    {
+        new(&data_[index]) T(value);
+    }
+
+    void reallocate_()
+    {
+        int newCapacity = capacity_ * 1.6; //2
+        if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
+
+        T* newData = static_cast<T*>(std::malloc(sizeof(T) * newCapacity));
+
+        for (int i = 0; i < size_; i++)
+        {
+            new(&newData[i]) T(std::move(data_[i]));
+            data_[i].~T();
+        }
+
+        std::free(data_);
+        data_ = newData;
+        capacity_ = newCapacity;
     }
 };
 

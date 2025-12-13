@@ -13,6 +13,7 @@ add_executable(cpp_lab2
 
 add_executable(ArrayTest
         tests/ArrayTest.cpp
+        tests/ArrayTest.cpp
 )
 
 

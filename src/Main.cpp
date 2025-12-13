@@ -15,10 +15,12 @@ int main()
 
 
     // ????
-    /*for (auto it = a.iterator(); it.hasNext(); it.next())
+    /*
+    for (auto it = a.iterator(); it.hasNext(); it.next())
     {
         std::cout << it.get() << std::endl;
-    }*/
+    }
+    */
 
     for (auto it = a.iterator(); it.isValid(); it.next())
     {
