@@ -27,6 +27,10 @@ int main()
         std::cout << it.get() << " ";
     }
 
+    Array<int> a1;
+    Array<int> a2;
+    a1 = a2;
+
 
     /*using namespace std;
     Array<string> arr(5);

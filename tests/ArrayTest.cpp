@@ -1,5 +1,6 @@
 ﻿#include "../include/Array.h"
 #include "gtest/gtest.h"
+#include <string>
 
 
 int main(int argc, char* argv[])
@@ -223,12 +224,143 @@ TEST(ArrayTest, InsertAfterRemoveString)
 }
 
 
-TEST(ArrayTest, NoMemoryLeak)
+//NEW TESTS
+TEST(ArrayAssignmentTest, CopyAssignmentWorks)
 {
-    auto* arr = new Array<std::string>();
-    for (int i = 0; i < 100; ++i)
+    Array<int> arr1;
+    arr1.insert(1);
+    arr1.insert(2);
+    arr1.insert(3);
+
+    Array<int> arr2;
+    arr2.insert(4);
+    arr2.insert(5);
+
+    arr2 = arr1;
+
+    EXPECT_EQ(arr2.size(), 3);
+    EXPECT_EQ(arr2[0], 1);
+    EXPECT_EQ(arr2[1], 2);
+    EXPECT_EQ(arr2[2], 3);
+
+    EXPECT_EQ(arr1.size(), 3);
+    EXPECT_EQ(arr1[0], 1);
+}
+
+TEST(ArrayAssignmentTest, MoveAssignmentWorks)
+{
+    Array<int> arr1;
+    arr1.insert(1);
+    arr1.insert(2);
+    arr1.insert(3);
+
+    Array<int> arr2;
+
+    arr2 = std::move(arr1);
+
+    EXPECT_EQ(arr2.size(), 3);
+    EXPECT_EQ(arr2[0], 1);
+    EXPECT_EQ(arr2[1], 2);
+    EXPECT_EQ(arr2[2], 3);
+
+    EXPECT_EQ(arr1.size(), 0);
+    EXPECT_EQ(arr1.capacity(), 0);
+}
+
+TEST(ArrayAssignmentTest, SelfAssignmentWorks)
+{
+    Array<int> arr;
+    arr.insert(1);
+    arr.insert(2);
+    arr.insert(3);
+
+    arr = arr;
+
+    EXPECT_EQ(arr.size(), 3);
+    EXPECT_EQ(arr[0], 1);
+    EXPECT_EQ(arr[1], 2);
+    EXPECT_EQ(arr[2], 3);
+}
+
+TEST(ArrayAssignmentTest, AssignmentChainWorks)
+{
+    Array<int> arr1;
+    arr1.insert(1);
+
+    Array<int> arr2;
+    arr2.insert(2);
+
+    Array<int> arr3;
+    arr3.insert(3);
+
+    // Цепочка присваиваний
+    arr1 = arr2 = arr3;
+
+    EXPECT_EQ(arr1.size(), 1);
+    EXPECT_EQ(arr1[0], 3);
+    EXPECT_EQ(arr2.size(), 1);
+    EXPECT_EQ(arr2[0], 3);
+    EXPECT_EQ(arr3.size(), 1);
+    EXPECT_EQ(arr3[0], 3);
+}
+
+TEST(ArrayAssignmentTest, CopyAssignmentWithStrings)
+{
+    Array<std::string> arr1;
+    arr1.insert("hello");
+    arr1.insert("world");
+
+    Array<std::string> arr2;
+    arr2.insert("test");
+
+    arr2 = arr1;
+
+    EXPECT_EQ(arr2.size(), 2);
+    EXPECT_EQ(arr2[0], "hello");
+    EXPECT_EQ(arr2[1], "world");
+
+
+    arr1[0] = "modified";
+    EXPECT_EQ(arr2[0], "hello");
+}
+
+TEST(ArrayAssignmentTest, MoveAssignmentWithStrings)
+{
+    Array<std::string> arr1;
+    arr1.insert("hello");
+    arr1.insert("world");
+
+    Array<std::string> arr2;
+
+    arr2 = std::move(arr1);
+
+    EXPECT_EQ(arr2.size(), 2);
+    EXPECT_EQ(arr2[0], "hello");
+    EXPECT_EQ(arr2[1], "world");
+
+    EXPECT_EQ(arr1.size(), 0);
+}
+
+TEST(ArrayAssignmentTest, AssignmentUsesCopyAndSwap)
+{
+    Array<int> arr1(10);
+    for (int i = 0; i < 8; ++i)
     {
-        arr->insert("string" + std::to_string(i));
+        arr1.insert(i);
     }
-    delete arr;
+
+    Array<int> arr2(5);
+
+
+    arr2 = arr1;
+
+    EXPECT_EQ(arr2.capacity(), 10);
+    EXPECT_EQ(arr2.size(), 8);
+
+    Array<int> arr3;
+    arr3 = std::move(arr2);
+
+    EXPECT_EQ(arr3.capacity(), 10);
+    EXPECT_EQ(arr3.size(), 8);
+    EXPECT_EQ(arr2.capacity(), 0);
 }

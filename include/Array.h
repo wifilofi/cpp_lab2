@@ -88,12 +88,15 @@ public:
 #pragma region Operators
     Array& operator=(Array other) noexcept
     {
+        std::cout << "\n OPERATOR 1 \n";
         swap(*this, other);
         return *this;
     }
 
-    Array& operator=(Array&& other) noexcept
+    /*Array& operator=(Array&& other) noexcept
     {
+        std::cout << "\n OPERATOR 2 \n";
+
         if (this != &other)
         {
             for (int i = 0; i < size_; i++)
@@ -107,7 +110,7 @@ public:
             data_ = std::exchange(other.data_, nullptr);
         }
         return *this;
-    }
+    }*/
 
     const T& operator[](int index) const
     {
@@ -126,7 +129,7 @@ public:
     {
         if (size_ >= capacity_)
         {
-            reallocate_();
+            reallocate();
         }
 
         constructAt(size_, value);
@@ -144,7 +147,7 @@ public:
 
         if (size_ >= capacity_)
         {
-            reallocate_();
+            reallocate();
         }
 
         for (int i = size_; i > index; i--)
