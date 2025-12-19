@@ -24,10 +24,12 @@ public:
     Array(int initCapacity)
         : capacity_(initCapacity)
     {
-        if (capacity_ < 1)
+        //TODO: make capacity 8 + ternary operator
+        capacity_ = capacity_ < 1 ? 8 : capacity_;
+        /*if (capacity_ < 1)
         {
             capacity_ = 1;
-        }
+        }*/
 
         data_ = static_cast<T*>(std::malloc(sizeof(T) * capacity_));
     }
@@ -287,6 +289,7 @@ private:
     int size_ = 0;
     T* data_ = nullptr;
 
+    //TODO: T&& is bery strange
     void constructAt(int index, const T&& value)
     {
         new(&data_[index]) T(std::move(value));
@@ -297,6 +300,7 @@ private:
         new(&data_[index]) T(value);
     }
 
+    // _
     void reallocate_()
     {
         int newCapacity = capacity_ * 1.6; //2
