@@ -301,7 +301,7 @@ private:
     }
 
     // _
-    void reallocate_()
+    void reallocate()
     {
         int newCapacity = capacity_ * 1.6; //2
         if (newCapacity <= capacity_) newCapacity = capacity_ + 1;
